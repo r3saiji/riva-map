@@ -45,7 +45,7 @@ mapImg.src = "map.png";
 
 // カボチャ画像
 const pumpkinImg = new Image();
-pumpkinImg.src = "pumpkin.png";  // ← ふじでんさんが保存した画像
+pumpkinImg.src = "pumpkin.png";
 
 let stamps = [];
 
@@ -74,21 +74,19 @@ function drawAll() {
 
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
-  const stampSize = 90 * scaleX; // ← カボチャの大きさ（調整可）
+  const stampSize = 90 * scaleX;
 
   stamps.forEach(s => {
 
-    // ★ 影（ドロップシャドウ）
+    // 影
     ctx.shadowColor = "rgba(0,0,0,0.4)";
     ctx.shadowBlur = 12;
 
-    // カボチャ画像
     ctx.drawImage(pumpkinImg, s.x - stampSize/2, s.y - stampSize/2, stampSize, stampSize);
 
-    // ★ 影をリセット
     ctx.shadowBlur = 0;
 
-    // ★ 白い縁取り（アウトライン）
+    // 白縁
     ctx.strokeStyle = "white";
     ctx.lineWidth = 6;
     ctx.beginPath();
@@ -97,7 +95,7 @@ function drawAll() {
   });
 }
 
-// タップ位置取得（ズレ補正）
+// タップ位置取得（ズレ補正＋トグル機能）
 canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -106,23 +104,4 @@ canvas.addEventListener("pointerdown", (e) => {
   const x = (e.clientX - rect.left) * scaleX;
   const y = (e.clientY - rect.top) * scaleY;
 
-  stamps.push({ x, y });
-  saveData();
-  drawAll();
-});
-
-// 画像読み込み後にキャンバスサイズ設定（内部サイズを縮小）
-mapImg.onload = () => {
-  const displayWidth = canvas.getBoundingClientRect().width;
-  const scale = displayWidth / mapImg.width;
-
-  canvas.width = mapImg.width * scale;
-  canvas.height = mapImg.height * scale;
-
-  loadData();
-  drawAll();
-};
-</script>
-
-</body>
-</html>
+  // ★ トグル処理：近くに既存スタンプがあるかチェック
