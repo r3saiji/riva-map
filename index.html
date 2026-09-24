@@ -105,3 +105,37 @@ canvas.addEventListener("pointerdown", (e) => {
   const y = (e.clientY - rect.top) * scaleY;
 
   // ★ トグル処理：近くに既存スタンプがあるかチェック
+  const threshold = 50 * scaleX; // 判定距離
+  const index = stamps.findIndex(s => {
+    const dx = s.x - x;
+    const dy = s.y - y;
+    return Math.sqrt(dx*dx + dy*dy) < threshold;
+  });
+
+  if (index >= 0) {
+    // ★ 既存スタンプが近くにある → 消す
+    stamps.splice(index, 1);
+  } else {
+    // ★ ない → 新しく追加
+    stamps.push({ x, y });
+  }
+
+  saveData();
+  drawAll();
+});
+
+// 画像読み込み後にキャンバスサイズ設定
+mapImg.onload = () => {
+  const displayWidth = canvas.getBoundingClientRect().width;
+  const scale = displayWidth / mapImg.width;
+
+  canvas.width = mapImg.width * scale;
+  canvas.height = mapImg.height * scale;
+
+  loadData();
+  drawAll();
+};
+</script>
+
+</body>
+</html>
