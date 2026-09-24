@@ -12,7 +12,7 @@
   }
   #mapCanvas {
     width: 100%;
-    max-width: 900px; /* スマホで見やすい */
+    max-width: 900px;
     touch-action: none;
     display: block;
     margin: 0 auto;
@@ -70,7 +70,7 @@ function drawAll() {
   // 表示サイズに合わせてスタンプサイズ補正
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
-  const stampSize = 50 * scaleX;  // ← ここで大きさ調整（50px相当）
+  const stampSize = 80 * scaleX;  // ← ここで大きさ調整（80px相当）
 
   stamps.forEach(s => {
     ctx.fillStyle = "orange";
@@ -95,10 +95,15 @@ canvas.addEventListener("pointerdown", (e) => {
   drawAll();
 });
 
-// 画像読み込み後にキャンバスサイズ設定
+// 画像読み込み後にキャンバスサイズ設定（内部サイズを縮小）
 mapImg.onload = () => {
-  canvas.width = mapImg.width;
-  canvas.height = mapImg.height;
+  // 内部サイズを縮小してズレを完全解消
+  const displayWidth = document.getElementById("mapCanvas").getBoundingClientRect().width;
+  const scale = displayWidth / mapImg.width;
+
+  canvas.width = mapImg.width * scale;
+  canvas.height = mapImg.height * scale;
+
   loadData();
   drawAll();
 };
