@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>おまつりマップスタンプをおしてしるしをつけよう！</title>
+
 <style>
   body {
     margin: 0;
@@ -10,6 +11,46 @@
     text-align: center;
     font-family: sans-serif;
   }
+
+  /* ★ タイトル（影＋ふち＋大きく） */
+  h2 {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    -webkit-text-stroke: 3px #ff6600;
+    text-shadow:
+      4px 4px 8px rgba(0,0,0,0.4),
+      0px 0px 12px rgba(255,100,0,0.6);
+    margin-top: 20px;
+  }
+
+  /* ★ インフォ枠＋背景＋アイコン横並び */
+  #info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    background: #fff7e6;
+    border: 3px solid #ff9900;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin: 20px auto;
+    width: fit-content;
+  }
+
+  .info-icon {
+    width: 60px;
+    height: auto;
+  }
+
+  .info-text {
+    font-size: 26px;
+    line-height: 1.6;
+    color: #333;
+    text-align: left;
+  }
+
   #mapCanvas {
     width: 100%;
     max-width: 900px;
@@ -17,17 +58,15 @@
     display: block;
     margin: 0 auto;
   }
+
   #controls {
     margin-top: 10px;
   }
+
   button {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-  #info {
-    font-size: 18px;
-    margin: 10px 0;
-    color: #333;
+    padding: 14px 28px;
+    font-size: 22px;
+    border-radius: 8px;
   }
 </style>
 </head>
@@ -36,9 +75,14 @@
 
 <h2>おまつりマップにおばけスタンプをおしちゃおう！</h2>
 
-<!-- ★ 説明文を追加 -->
+<!-- ★ インフォ（枠＋背景＋アイコン） -->
 <div id="info">
- いったところにしるしをつけよう！タップすると、かわいいオバケがでてくるよ。もういちどタップするときえるよ。
+  <img src="obake.png" class="info-icon">
+  <div class="info-text">
+    いったところにしるしをつけよう！<br>
+    タップすると、かわいいオバケがでてくるよ。<br>
+    もういちどタップするときえるよ。
+  </div>
 </div>
 
 <canvas id="mapCanvas"></canvas>
@@ -55,7 +99,7 @@ const ctx = canvas.getContext("2d");
 const mapImg = new Image();
 mapImg.src = "map.png";
 
-// カボチャ画像
+// オバケ画像（以前の pumpkin を差し替え）
 const pumpkinImg = new Image();
 pumpkinImg.src = "pumpkin.png";
 
