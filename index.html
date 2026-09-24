@@ -43,9 +43,9 @@ const ctx = canvas.getContext("2d");
 const mapImg = new Image();
 mapImg.src = "map.png";
 
-// カボチャ画像
+// カボチャ画像（ふじでんさんが保存した pumpkin.png）
 const pumpkinImg = new Image();
-pumpkinImg.src = "pumpkin.png";  // ← ここにカボチャ画像を置く
+pumpkinImg.src = "pumpkin.png";
 
 let stamps = [];
 
@@ -74,8 +74,7 @@ function drawAll() {
 
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
-
-  const stampSize = 80 * scaleX;  // ← カボチャの大きさ（調整可）
+  const stampSize = 80 * scaleX; // ← カボチャの大きさ（調整可）
 
   stamps.forEach(s => {
     ctx.drawImage(pumpkinImg, s.x - stampSize/2, s.y - stampSize/2, stampSize, stampSize);
@@ -85,7 +84,6 @@ function drawAll() {
 // タップ位置取得（ズレ補正）
 canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
-
   const scaleX = canvas.width / rect.width;
   const scaleY = canvas.height / rect.height;
 
