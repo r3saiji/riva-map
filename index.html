@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>冒険マップスタンプ</title>
+<style>
+  body {
+    margin: 0;
+    background: #f7f7f7;
+    text-align: center;
+    font-family: sans-serif;
+  }
+  #mapCanvas {
+    width: 100%;
+    max-width: 600px;
+    touch-action: none;
+  }
+  #controls {
+    margin-top: 10px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<h2>🎃 冒険マップスタンプ</h2>
+<canvas id="mapCanvas"></canvas>
+
+<div id="controls">
+  <button onclick="clearStamps()">スタンプを消す</button>
+</div>
+
+<script>
+const canvas = document.getElementById("mapCanvas");
+const ctx = canvas.getContext("2d");
+
+// マップ画像
+const mapImg = new Image();
+mapImg.src = "map.png";  // ←ふじでんさんのマップ画像を map.png として置く
+
+// 20pxのゆるキャラかぼちゃスタンプ（絵文字）
+const stampSize = 20;
+const stampEmoji = "🎃";
+
+// 保存データ
+let stamps = [];
+
+// 画像読み込み後にキャンバス設定
+mapImg.onload = () => {
+  canvas.width = mapImg.width;
+  canvas.height = mapImg.height;
+  drawAll();
+};
+
+// タップ位置取得
+canvas.addEventListener("pointerdown", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left);
+  const y = (e.clientY - rect.top);
+
+  stamps.push({ x, y });
+  saveData();
+  drawAll();
+});
+
+// 描画処理
+function drawAll() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(mapImg, 0, 0);
+
+  ctx.font = `${stampSize}px serif`;
+  stamps.forEach(s => {
+    ctx.fillText(stampEmoji, s.x - stampSize/2, s.y + stampSize/2);
+  });
+}
+
+// 保存
+function saveData() {
+  localStorage.setItem("stamps", JSON.stringify(stamps));
+}
+
+// 読み込み
+function loadData() {
+  const data = localStorage.getItem("stamps");
+  if (data) stamps = JSON.parse(data);
+}
+loadData();
+
+// スタンプ消去
+function clearStamps() {
+  stamps = [];
+  saveData();
+  drawAll();
+}
+</script>
+
+</body>
+</html>
