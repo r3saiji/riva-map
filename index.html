@@ -24,11 +24,23 @@
     padding: 10px 20px;
     font-size: 16px;
   }
+  #info {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333;
+  }
 </style>
 </head>
 
 <body>
+
 <h2>冒険マップスタンプ</h2>
+
+<!-- ★ 説明文を追加 -->
+<div id="info">
+  行ったところにタップするとカボチャが出てくるよ。もう一度タップすると消えるよ。
+</div>
+
 <canvas id="mapCanvas"></canvas>
 
 <div id="controls">
@@ -105,7 +117,7 @@ canvas.addEventListener("pointerdown", (e) => {
   const y = (e.clientY - rect.top) * scaleY;
 
   // ★ トグル処理：近くに既存スタンプがあるかチェック
-  const threshold = 50 * scaleX; // 判定距離
+  const threshold = 50 * scaleX;
   const index = stamps.findIndex(s => {
     const dx = s.x - x;
     const dy = s.y - y;
@@ -113,10 +125,10 @@ canvas.addEventListener("pointerdown", (e) => {
   });
 
   if (index >= 0) {
-    // ★ 既存スタンプが近くにある → 消す
+    // 既存スタンプが近くにある → 消す
     stamps.splice(index, 1);
   } else {
-    // ★ ない → 新しく追加
+    // ない → 新しく追加
     stamps.push({ x, y });
   }
 
