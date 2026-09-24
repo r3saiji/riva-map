@@ -43,9 +43,9 @@ const ctx = canvas.getContext("2d");
 const mapImg = new Image();
 mapImg.src = "map.png";
 
-// カボチャ画像（ふじでんさんが保存した pumpkin.png）
+// カボチャ画像
 const pumpkinImg = new Image();
-pumpkinImg.src = "pumpkin.png";
+pumpkinImg.src = "pumpkin.png";  // ← ふじでんさんが保存した画像
 
 let stamps = [];
 
@@ -74,10 +74,26 @@ function drawAll() {
 
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
-  const stampSize = 80 * scaleX; // ← カボチャの大きさ（調整可）
+  const stampSize = 90 * scaleX; // ← カボチャの大きさ（調整可）
 
   stamps.forEach(s => {
+
+    // ★ 影（ドロップシャドウ）
+    ctx.shadowColor = "rgba(0,0,0,0.4)";
+    ctx.shadowBlur = 12;
+
+    // カボチャ画像
     ctx.drawImage(pumpkinImg, s.x - stampSize/2, s.y - stampSize/2, stampSize, stampSize);
+
+    // ★ 影をリセット
+    ctx.shadowBlur = 0;
+
+    // ★ 白い縁取り（アウトライン）
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, stampSize / 2, 0, Math.PI * 2);
+    ctx.stroke();
   });
 }
 
