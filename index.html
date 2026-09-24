@@ -39,8 +39,13 @@
 const canvas = document.getElementById("mapCanvas");
 const ctx = canvas.getContext("2d");
 
+// マップ画像
 const mapImg = new Image();
 mapImg.src = "map.png";
+
+// カボチャ画像
+const pumpkinImg = new Image();
+pumpkinImg.src = "pumpkin.png";  // ← ここにカボチャ画像を置く
 
 let stamps = [];
 
@@ -67,16 +72,13 @@ function drawAll() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(mapImg, 0, 0, canvas.width, canvas.height);
 
-  // 表示サイズに合わせてスタンプサイズ補正
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
-  const stampSize = 80 * scaleX;  // ← ここで大きさ調整（80px相当）
+
+  const stampSize = 80 * scaleX;  // ← カボチャの大きさ（調整可）
 
   stamps.forEach(s => {
-    ctx.fillStyle = "orange";
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, stampSize / 2, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.drawImage(pumpkinImg, s.x - stampSize/2, s.y - stampSize/2, stampSize, stampSize);
   });
 }
 
@@ -97,8 +99,7 @@ canvas.addEventListener("pointerdown", (e) => {
 
 // 画像読み込み後にキャンバスサイズ設定（内部サイズを縮小）
 mapImg.onload = () => {
-  // 内部サイズを縮小してズレを完全解消
-  const displayWidth = document.getElementById("mapCanvas").getBoundingClientRect().width;
+  const displayWidth = canvas.getBoundingClientRect().width;
   const scale = displayWidth / mapImg.width;
 
   canvas.width = mapImg.width * scale;
