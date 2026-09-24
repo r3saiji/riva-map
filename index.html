@@ -12,8 +12,10 @@
   }
   #mapCanvas {
     width: 100%;
-    max-width: 900px; /* スマホで見やすいサイズ */
+    max-width: 900px; /* スマホで見やすい */
     touch-action: none;
+    display: block;
+    margin: 0 auto;
   }
   #controls {
     margin-top: 10px;
@@ -30,7 +32,7 @@
 <canvas id="mapCanvas"></canvas>
 
 <div id="controls">
-  <button onclick="clearAll()">全部消す</button>
+  <button onclick="clearAll()">スタンプを消す</button>
 </div>
 
 <script>
@@ -65,10 +67,10 @@ function drawAll() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(mapImg, 0, 0, canvas.width, canvas.height);
 
-  // キャンバス縮尺に合わせてスタンプサイズ補正
+  // 表示サイズに合わせてスタンプサイズ補正
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
-  const stampSize = 40 * scaleX;  // ← スマホでも見やすいサイズ
+  const stampSize = 50 * scaleX;  // ← ここで大きさ調整（50px相当）
 
   stamps.forEach(s => {
     ctx.fillStyle = "orange";
@@ -104,4 +106,3 @@ mapImg.onload = () => {
 
 </body>
 </html>
-
