@@ -12,7 +12,7 @@
   }
   #mapCanvas {
     width: 100%;
-    max-width: 600px;
+    max-width: 900px; /* スマホで見やすいサイズ */
     touch-action: none;
   }
   #controls {
@@ -24,77 +24,82 @@
   }
 </style>
 </head>
-<body>
 
-<h2>🎃 冒険マップスタンプ</h2>
+<body>
+<h2>冒険マップスタンプ</h2>
 <canvas id="mapCanvas"></canvas>
 
 <div id="controls">
-  <button onclick="clearStamps()">スタンプを消す</button>
+  <button onclick="clearAll()">全部消す</button>
 </div>
 
 <script>
 const canvas = document.getElementById("mapCanvas");
 const ctx = canvas.getContext("2d");
 
-// マップ画像
 const mapImg = new Image();
-mapImg.src = "map.png";  // ←ふじでんさんのマップ画像を map.png として置く
+mapImg.src = "map.png";
 
-// 20pxのゆるキャラかぼちゃスタンプ（絵文字）
-const stampSize = 20;
-const stampEmoji = "🎃";
-
-// 保存データ
 let stamps = [];
 
-// 画像読み込み後にキャンバス設定
-mapImg.onload = () => {
-  canvas.width = mapImg.width;
-  canvas.height = mapImg.height;
-  drawAll();
-};
+// 保存データ読み込み
+function loadData() {
+  const saved = localStorage.getItem("riva-map-stamps");
+  if (saved) stamps = JSON.parse(saved);
+}
 
-// タップ位置取得
+// 保存データ書き込み
+function saveData() {
+  localStorage.setItem("riva-map-stamps", JSON.stringify(stamps));
+}
+
+// すべて消す
+function clearAll() {
+  stamps = [];
+  saveData();
+  drawAll();
+}
+
+// 描画処理
+function drawAll() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(mapImg, 0, 0, canvas.width, canvas.height);
+
+  // キャンバス縮尺に合わせてスタンプサイズ補正
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const stampSize = 40 * scaleX;  // ← スマホでも見やすいサイズ
+
+  stamps.forEach(s => {
+    ctx.fillStyle = "orange";
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, stampSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+// タップ位置取得（ズレ補正）
 canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX - rect.left);
-  const y = (e.clientY - rect.top);
+
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+
+  const x = (e.clientX - rect.left) * scaleX;
+  const y = (e.clientY - rect.top) * scaleY;
 
   stamps.push({ x, y });
   saveData();
   drawAll();
 });
 
-// 描画処理
-function drawAll() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(mapImg, 0, 0);
-
-  ctx.font = `${stampSize}px serif`;
-  stamps.forEach(s => {
-    ctx.fillText(stampEmoji, s.x - stampSize/2, s.y + stampSize/2);
-  });
-}
-
-// 保存
-function saveData() {
-  localStorage.setItem("stamps", JSON.stringify(stamps));
-}
-
-// 読み込み
-function loadData() {
-  const data = localStorage.getItem("stamps");
-  if (data) stamps = JSON.parse(data);
-}
-loadData();
-
-// スタンプ消去
-function clearStamps() {
-  stamps = [];
-  saveData();
+// 画像読み込み後にキャンバスサイズ設定
+mapImg.onload = () => {
+  canvas.width = mapImg.width;
+  canvas.height = mapImg.height;
+  loadData();
   drawAll();
-}
+};
 </script>
 
 </body>
