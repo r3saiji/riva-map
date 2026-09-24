@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>おまつりマップスタンプをおしてしるしをつけよう！</title>
-　<style>
+
+<style>
   body {
     margin: 0;
     background: #f7f7f7;
@@ -11,7 +12,19 @@
     font-family: sans-serif;
   }
 
-  /* ★ タイトル（影＋ふち＋大きく） */
+  /* ★ タイトル全体を囲む四角枠 */
+  #title-box {
+    display: inline-block;
+    padding: 20px 30px;
+    margin-top: 20px;
+
+    background: #fff7e6;               /* やさしいオレンジ背景 */
+    border: 5px solid #ff9900;         /* 祭りっぽい太枠 */
+    border-radius: 20px;               /* 角丸 */
+    box-shadow: 0 0 15px rgba(255,150,0,0.6); /* 光る感じ */
+  }
+
+  /* ★ タイトル（影＋ふち） */
   h2 {
     font-size: 42px;
     font-weight: bold;
@@ -20,8 +33,8 @@
     text-shadow:
       4px 4px 8px rgba(0,0,0,0.4),
       0px 0px 12px rgba(255,100,0,0.6);
-    margin-top: 20px;
     line-height: 1.3;
+    margin: 0;
   }
 
   /* ★ 特大キラキラ強調（秋祭り・リバ3自治会・HALLOWEEN） */
@@ -88,13 +101,16 @@
 
 <body>
 
-<h2>
-  <span class="big-kira">秋祭り</span><br>
-  <span class="big-kira">リバ3自治会</span><br>
-  <span class="big-kira">HALLOWEEN</span><br>
-  おまつりマップに<br>
-  おばけスタンプをおしちゃおう！
-</h2>
+<!-- ★ タイトルを四角で囲む -->
+<div id="title-box">
+  <h2>
+    <span class="big-kira">秋祭り</span><br>
+    <span class="big-kira">リバ3自治会</span><br>
+    <span class="big-kira">HALLOWEEN</span><br>
+    おまつりマップに<br>
+    おばけスタンプをおしちゃおう！
+  </h2>
+</div>
 
 <!-- ★ インフォ（枠＋背景＋アイコン） -->
 <div id="info">
