@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>冒険マップスタンプ</title>
+
 <style>
   body {
     margin: 0;
@@ -10,6 +11,47 @@
     text-align: center;
     font-family: sans-serif;
   }
+
+  /* ★ キラキラタイトル */
+  .big-kira {
+    font-size: 60px;
+    font-weight: bold;
+    color: #fff;
+    -webkit-text-stroke: 4px #ff6600;
+    text-shadow:
+      0 0 10px rgba(255,150,0,0.9),
+      0 0 20px rgba(255,120,0,0.7),
+      0 0 30px rgba(255,80,0,0.6),
+      4px 4px 8px rgba(0,0,0,0.4);
+    display: inline-block;
+    margin: 6px 0;
+    animation: kira 2.5s infinite ease-in-out;
+  }
+
+  @keyframes kira {
+    0% {
+      text-shadow:
+        0 0 8px rgba(255,150,0,0.6),
+        0 0 16px rgba(255,120,0,0.5),
+        0 0 24px rgba(255,80,0,0.4),
+        4px 4px 8px rgba(0,0,0,0.4);
+    }
+    50% {
+      text-shadow:
+        0 0 18px rgba(255,200,0,1),
+        0 0 30px rgba(255,160,0,0.9),
+        0 0 40px rgba(255,120,0,0.8),
+        4px 4px 12px rgba(0,0,0,0.5);
+    }
+    100% {
+      text-shadow:
+        0 0 8px rgba(255,150,0,0.6),
+        0 0 16px rgba(255,120,0,0.5),
+        0 0 24px rgba(255,80,0,0.4),
+        4px 4px 8px rgba(0,0,0,0.4);
+    }
+  }
+
   #mapCanvas {
     width: 100%;
     max-width: 900px;
@@ -17,14 +59,17 @@
     display: block;
     margin: 0 auto;
   }
+
   #info {
     font-size: 18px;
     margin: 10px 0;
     color: #333;
   }
+
   #shopList {
     margin-top: 15px;
   }
+
   .shopButton {
     display: inline-block;
     margin: 5px;
@@ -35,15 +80,37 @@
     font-size: 16px;
     cursor: pointer;
   }
+
   .shopButton:hover {
     background-color: #ffdd88;
+  }
+
+  #controls button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #ff8888;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  #controls button:hover {
+    background-color: #ffaaaa;
   }
 </style>
 </head>
 
 <body>
 
-<h2>冒険マップスタンプ</h2>
+<!-- ★ キラキラタイトル（ページの一番上） -->
+<h2>
+  <span class="big-kira">秋祭り★リバ3自治会</span><br>
+ 
+  <span class="big-kira">🎃　HALLOWEEN　🎃</span><br>
+  おまつりマップに<br>
+  おばけスタンプをおしちゃおう！
+</h2>
 
 <div id="info">
   行ったところにタップするとおばけが出てくるよ。もう一度タップすると消えるよ。<br>
@@ -51,6 +118,11 @@
 </div>
 
 <canvas id="mapCanvas"></canvas>
+
+<!-- ★ マップのすぐ下に移動したボタン -->
+<div id="controls">
+  <button onclick="clearAll()">スタンプを全部消す</button>
+</div>
 
 <!-- ★ 13店舗のボタン一覧 -->
 <div id="shopList">
@@ -71,10 +143,6 @@
 
   <button class="shopButton" onclick="showShopInfo('模擬店1')">模擬店1</button>
   <button class="shopButton" onclick="showShopInfo('模擬店2')">模擬店2</button>
-</div>
-
-<div id="controls">
-  <button onclick="clearAll()">スタンプを消す</button>
 </div>
 
 <script>
@@ -188,3 +256,4 @@ mapImg.onload = () => {
 
 </body>
 </html>
+
