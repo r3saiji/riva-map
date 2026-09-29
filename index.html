@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>冒険マップスタンプ</title>
 
 <style>
@@ -83,14 +83,17 @@ body {
 /* マップ */
 #mapCanvas {
   display: block;
-  width: 100%;
   flex: 1 1 auto;
   min-height: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   touch-action: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* スタンプ消去 */
+/* スタンプ消去ボタン */
 #controls {
   flex: 0 0 auto;
   width: 100%;
@@ -117,7 +120,7 @@ body {
   color: #444;
 }
 
-/* お店ボタン：4列 */
+/* お店ボタン */
 #shopList {
   flex: 0 0 auto;
   display: grid;
@@ -137,6 +140,11 @@ body {
   font-weight: bold;
   line-height: 1.1;
   overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.shopButton:active {
+  background: #ffdd88;
 }
 
 /* 高さが小さいスマホ */
@@ -273,32 +281,19 @@ function clearAll() {
   drawAll();
 }
 
+/* Canvasの内部サイズと表示サイズを一致させる */
 function resizeCanvas() {
   if (!mapImg.complete || !mapImg.naturalWidth) return;
 
   const rect = canvas.getBoundingClientRect();
 
-  // マップ画像の縦横比を維持
   const scale = Math.min(
     rect.width / mapImg.naturalWidth,
     rect.height / mapImg.naturalHeight
   );
 
-  const oldWidth = canvas.width;
-  const oldHeight = canvas.height;
-
-  const newWidth = Math.round(mapImg.naturalWidth * scale);
-  const newHeight = Math.round(mapImg.naturalHeight * scale);
-
-  if (oldWidth && oldHeight && stamps.length) {
-    stamps = stamps.map(s => ({
-      x: s.x * newWidth / oldWidth,
-      y: s.y * newHeight / oldHeight
-    }));
-  }
-
-  canvas.width = newWidth;
-  canvas.height = newHeight;
+  canvas.width = Math.round(mapImg.naturalWidth * scale);
+  canvas.height = Math.round(mapImg.naturalHeight * scale);
 
   drawAll();
 }
@@ -315,6 +310,7 @@ function drawAll() {
     if (obakeImg.complete && obakeImg.naturalWidth) {
       ctx.shadowColor = "rgba(0,0,0,0.4)";
       ctx.shadowBlur = 8;
+
       ctx.drawImage(
         obakeImg,
         s.x - stampSize / 2,
@@ -322,6 +318,7 @@ function drawAll() {
         stampSize,
         stampSize
       );
+
       ctx.shadowBlur = 0;
     }
 
@@ -333,6 +330,7 @@ function drawAll() {
   });
 }
 
+/* タップ位置をCanvas座標に正確に変換 */
 canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
 
