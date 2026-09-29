@@ -2,22 +2,42 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>冒険マップスタンプ</title>
 
 <style>
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
+    padding: 0 10px 30px;
     background: #f7f7f7;
     text-align: center;
     font-family: sans-serif;
   }
 
-  /* ★ キラキラ文字（サイズアップ） */
+  /* タイトル：画面幅に合わせて自動調整 */
+  .titleBox {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px 8px;
+    margin: 20px auto 0;
+    border: 5px solid #ff6600;
+    border-radius: 20px;
+    background: #ffffff;
+    line-height: 1.4;
+  }
+
   .big-kira {
-    font-size: 55px;
+    display: inline-block;
+    max-width: 100%;
+    font-size: clamp(24px, 6vw, 55px);
     font-weight: bold;
     color: #fff;
-    -webkit-text-stroke: 3px #ff6600;
+    -webkit-text-stroke: 2px #ff6600;
     text-shadow:
       0 0 10px rgba(255,150,0,0.9),
       0 0 20px rgba(255,120,0,0.7),
@@ -27,7 +47,7 @@
   }
 
   @keyframes kira {
-    0% {
+    0%, 100% {
       text-shadow:
         0 0 8px rgba(255,150,0,0.6),
         0 0 16px rgba(255,120,0,0.5),
@@ -39,113 +59,158 @@
         0 0 30px rgba(255,160,0,0.9),
         0 0 40px rgba(255,120,0,0.8);
     }
-    100% {
-      text-shadow:
-        0 0 8px rgba(255,150,0,0.6),
-        0 0 16px rgba(255,120,0,0.5),
-        0 0 24px rgba(255,80,0,0.4);
-    }
   }
 
-  /* ★ 四角で囲うタイトル枠 */
-  .titleBox {
-    display: inline-block;
-    padding: 25px 35px;
-    margin-top: 20px;
-    border: 5px solid #ff6600;
-    border-radius: 20px;
-    background: #ffffff;
-    line-height: 1.4;
-  }
-
-  /* ★ 四角なしサブタイトル（マップとの間にスペース追加） */
+  /* サブタイトル */
   .titleSub {
-    font-size: 30px;
+    font-size: clamp(22px, 4.5vw, 30px);
     margin-top: 15px;
     margin-bottom: 35px;
     line-height: 1.4;
   }
 
-  /* ★ 四角で囲う説明文（ここにスペース追加！） */
+  /* 説明文 */
   .infoBox {
-    display: inline-block;
-    padding: 15px 25px;
-    margin-top: 10px;
-    margin-bottom: 40px;   /* ← マップとの間にスペース追加！ */
+    display: block;
+    width: 100%;
+    max-width: 750px;
+    padding: 15px 12px;
+    margin: 10px auto 40px;
     border: 4px solid #8888ff;
     border-radius: 15px;
     background: #ffffff;
-    font-size: 20px;
+    font-size: clamp(16px, 3.5vw, 20px);
     line-height: 1.6;
   }
 
+  /* マップ */
   #mapCanvas {
     width: 100%;
     max-width: 900px;
+    height: auto;
     touch-action: none;
     display: block;
     margin: 0 auto;
   }
 
+  /* スタンプを全部消すボタン */
+  #controls {
+    margin: 20px auto 30px;
+  }
+
+  #controls button {
+    width: 100%;
+    max-width: 500px;
+    min-height: 75px;
+    padding: 18px 15px;
+    font-size: clamp(22px, 4.5vw, 30px);
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff6666;
+    border: 3px solid #e54444;
+    border-radius: 16px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #c93636;
+  }
+
+  #controls button:hover {
+    background-color: #ff8888;
+  }
+
+  #controls button:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #c93636;
+  }
+
+  /* お店の紹介 */
   #shopIntro {
-    font-size: 22px;
-    margin-top: 20px;
+    font-size: clamp(20px, 4vw, 28px);
+    margin-top: 25px;
     font-weight: bold;
     color: #444;
     line-height: 1.6;
   }
 
+  /* お店のボタン一覧 */
   #shopList {
-    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
   }
 
+  /* お店のボタンを大きく */
   .shopButton {
-    display: inline-block;
-    margin: 5px;
-    padding: 10px 15px;
+    flex: 1 1 220px;
+    min-width: 0;
+    min-height: 75px;
+    padding: 16px 12px;
     background-color: #ffcc66;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border: 3px solid #f0a832;
+    border-radius: 14px;
+    font-size: clamp(18px, 3vw, 24px);
+    font-weight: bold;
+    line-height: 1.4;
     cursor: pointer;
+    box-shadow: 0 4px 0 #d99a29;
   }
 
   .shopButton:hover {
     background-color: #ffdd88;
   }
 
-  #controls button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #ff8888;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
+  .shopButton:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #d99a29;
   }
 
-  #controls button:hover {
-    background-color: #ffaaaa;
+  /* スマホ向け */
+  @media (max-width: 600px) {
+    body {
+      padding-right: 6px;
+      padding-left: 6px;
+    }
+
+    .titleBox {
+      padding: 18px 4px;
+      border-width: 4px;
+      border-radius: 15px;
+    }
+
+    .big-kira {
+      -webkit-text-stroke: 1.5px #ff6600;
+    }
+
+    .shopButton {
+      flex: 1 1 calc(50% - 10px);
+      min-height: 80px;
+      padding: 14px 6px;
+      font-size: 18px;
+    }
+
+    #controls button {
+      min-height: 80px;
+    }
   }
 </style>
 </head>
 
 <body>
 
-<!-- ★ 四角で囲う＋キラキラタイトル -->
 <div class="titleBox">
   <span class="big-kira">あきまつり★リバ３</span><br>
   <span class="big-kira">🎃 HALLOWEEN 🎃</span>
 </div>
 
-<!-- ★ 四角なしサブタイトル -->
 <div class="titleSub">
   おまつりマップに<br>
   おばけスタンプを<br>
   おしちゃおう！
 </div>
 
-<!-- ★ 四角で囲う説明文（スペース追加済み） -->
 <div class="infoBox">
   いったところにタップするとおばけがでてくるよ。<br>
   もういちどタップするときえるよ
@@ -153,36 +218,29 @@
 
 <canvas id="mapCanvas"></canvas>
 
-<!-- ★ マップのすぐ下にスタンプ消すボタン -->
 <div id="controls">
   <button onclick="clearAll()">スタンプを全部消す</button>
 </div>
 
-<!-- ★ おみせのしょうかい -->
 <div id="shopIntro">
   ★おみせのしょうかい★<br>
   ボタンをタップしてごらん<br>
   おみせのしょうかいがでるよ
 </div>
 
-<!-- ★ 13店舗のボタン一覧 -->
 <div id="shopList">
   <button class="shopButton" onclick="showShopInfo('フランク')">フランク</button>
   <button class="shopButton" onclick="showShopInfo('焼きいか・焼きうどん')">焼きいか・焼きうどん</button>
   <button class="shopButton" onclick="showShopInfo('キッチンカー')">キッチンカー</button>
-
   <button class="shopButton" onclick="showShopInfo('こどもお楽しみエリア')">こどもお楽しみエリア</button>
-　<button class="shopButton" onclick="showShopInfo('こども受付')">こども受付</button>
+  <button class="shopButton" onclick="showShopInfo('こども受付')">こども受付</button>
   <button class="shopButton" onclick="showShopInfo('ゲームコーナー')">ゲームコーナー</button>
   <button class="shopButton" onclick="showShopInfo('お菓子渡し')">お菓子渡し</button>
-
   <button class="shopButton" onclick="showShopInfo('たべもの券')">たべもの券</button>
   <button class="shopButton" onclick="showShopInfo('大抽選会受付')">大抽選会受付</button>
   <button class="shopButton" onclick="showShopInfo('ドリンク販売')">ドリンク販売</button>
-
   <button class="shopButton" onclick="showShopInfo('メインステージ')">メインステージ</button>
   <button class="shopButton" onclick="showShopInfo('公民館飲食・休憩エリア')">公民館飲食・休憩エリア</button>
-
   <button class="shopButton" onclick="showShopInfo('模擬店1')">模擬店1</button>
   <button class="shopButton" onclick="showShopInfo('模擬店2')">模擬店2</button>
 </div>
@@ -190,10 +248,10 @@
 <script>
 const canvas = document.getElementById("mapCanvas");
 const ctx = canvas.getContext("2d");
+
 const mapImg = new Image();
 mapImg.src = "map.png";
 
-/* ★ スタンプ画像を pumpkin.png に変更済み */
 const obakeImg = new Image();
 obakeImg.src = "pumpkin.png";
 
@@ -204,7 +262,7 @@ const shopInfo = {
   "焼きいか・焼きうどん": "香ばしい匂いが漂う屋台。\n200円で、はんばいしているよ",
   "キッチンカー": "7台のキッチンカーが来てるよ！\nおしゃれなフードトラックでおいしいものたべよう！\n券をお店の人にわたせば、100円やすいよ！",
   "こどもお楽しみエリア": "子どもたちの楽しいコーナーだよ！",
-　"こども受付": "こども抽選会の受付や\nおたのしみ券の受付してね！",
+  "こども受付": "こども抽選会の受付や\nおたのしみ券の受付してね！",
   "ゲームコーナー": "子どもたちに大人気のゲームコーナだよ！！",
   "お菓子渡し": "子どもたちにお菓子をプレゼント！\nおたのしみ券を見せてね！",
   "たべもの券": "たべもの券とたべものをひきかえするところ",
@@ -236,6 +294,8 @@ function clearAll() {
 }
 
 function drawAll() {
+  if (!mapImg.complete || !mapImg.naturalWidth) return;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(mapImg, 0, 0, canvas.width, canvas.height);
 
@@ -246,7 +306,13 @@ function drawAll() {
   stamps.forEach(s => {
     ctx.shadowColor = "rgba(0,0,0,0.4)";
     ctx.shadowBlur = 12;
-    ctx.drawImage(obakeImg, s.x - stampSize/2, s.y - stampSize/2, stampSize, stampSize);
+    ctx.drawImage(
+      obakeImg,
+      s.x - stampSize / 2,
+      s.y - stampSize / 2,
+      stampSize,
+      stampSize
+    );
     ctx.shadowBlur = 0;
 
     ctx.strokeStyle = "white";
@@ -261,14 +327,16 @@ canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
   const scaleY = canvas.height / rect.height;
+
   const x = (e.clientX - rect.left) * scaleX;
   const y = (e.clientY - rect.top) * scaleY;
 
   const threshold = 50 * scaleX;
+
   const index = stamps.findIndex(s => {
     const dx = s.x - x;
     const dy = s.y - y;
-    return Math.sqrt(dx*dx + dy*dy) < threshold;
+    return Math.sqrt(dx * dx + dy * dy) < threshold;
   });
 
   if (index >= 0) {
@@ -284,11 +352,25 @@ canvas.addEventListener("pointerdown", (e) => {
 mapImg.onload = () => {
   const displayWidth = canvas.getBoundingClientRect().width;
   const scale = displayWidth / mapImg.width;
+
   canvas.width = mapImg.width * scale;
   canvas.height = mapImg.height * scale;
+
   loadData();
   drawAll();
 };
+
+window.addEventListener("resize", () => {
+  if (!mapImg.complete || !mapImg.naturalWidth) return;
+
+  const displayWidth = canvas.getBoundingClientRect().width;
+  const scale = displayWidth / mapImg.width;
+
+  canvas.width = mapImg.width * scale;
+  canvas.height = mapImg.height * scale;
+
+  drawAll();
+});
 </script>
 
 </body>
