@@ -5,7 +5,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>あきまつり リバ３ ハロウィン</title>
+<title>あきまつり★リバ３ HALLOWEEN</title>
 
 <style>
 * {
@@ -188,7 +188,7 @@ h1 {
 <body>
 
 <header>
-  <h1>🎃 あきまつり リバ３ ハロウィン 🎃</h1>
+  <h1>🎃 あきまつり★リバ３ 🎃 HALLOWEEN 🎃</h1>
   <div class="subtitle">冒険マップ スタンプラリー</div>
 </header>
 
@@ -202,7 +202,9 @@ h1 {
 </div>
 
 <div class="clear-area">
-  <button id="clearButton" type="button">🧹 スタンプを全部消す</button>
+  <button id="clearButton" type="button">
+    🧹 スタンプを全部消す
+  </button>
 </div>
 
 <section class="shop-area">
@@ -212,14 +214,20 @@ h1 {
 <script>
 "use strict";
 
-/* 画像 */
+/* =======================================
+   画像
+======================================= */
+
 const mapImg = new Image();
 mapImg.src = "map.png";
 
 const stampImg = new Image();
 stampImg.src = "pumpkin.png";
 
-/* Canvas */
+/* =======================================
+   Canvas
+======================================= */
+
 const canvas = document.getElementById("mapCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -228,35 +236,52 @@ const STORAGE_KEY = "riva-map-stamps";
 let stamps = [];
 let mapLayout = null;
 
-/* 店舗情報 */
+/* =======================================
+   店舗情報
+======================================= */
+
 const shopInfo = {
-  "フランク": "フランクフルトのお店です。お祭りの食べ歩きを楽しんでね！",
+  "フランク":
+    "フランクフルトのお店です。お祭りの食べ歩きを楽しんでね！",
 
-  "焼きいか・焼きうどん": "焼きいか・焼きうどんのお店です。おいしいメニューを楽しんでね！",
+  "焼きいか・焼きうどん":
+    "焼きいか・焼きうどんのお店です。おいしいメニューを楽しんでね！",
 
-  "キッチンカー": "キッチンカーのお店です。どんなメニューがあるか見てみよう！",
+  "キッチンカー":
+    "キッチンカーのお店です。どんなメニューがあるか見てみよう！",
 
-  "こどもお楽しみエリア": "こども向けのお楽しみエリアです。楽しい時間を過ごしてね！",
+  "こどもお楽しみエリア":
+    "こども向けのお楽しみエリアです。楽しい時間を過ごしてね！",
 
-  "こども受付": "こども向けイベントの受付です。参加する人はこちらへどうぞ！",
+  "こども受付":
+    "こども向けイベントの受付です。参加する人はこちらへどうぞ！",
 
-  "ゲームコーナー": "ゲームに挑戦できるコーナーです。いろいろなゲームで遊んでね！",
+  "ゲームコーナー":
+    "ゲームに挑戦できるコーナーです。いろいろなゲームで遊んでね！",
 
-  "お菓子渡し": "お菓子を受け取る場所です。案内にしたがって並んでね！",
+  "お菓子渡し":
+    "お菓子を受け取る場所です。案内にしたがって並んでね！",
 
-  "たべもの券": "たべもの券の受付です。必要な券をこちらで確認してね！",
+  "たべもの券":
+    "たべもの券の受付です。必要な券をこちらで確認してね！",
 
-  "大抽選会受付": "大抽選会の受付です。参加方法を確認してね！",
+  "大抽選会受付":
+    "大抽選会の受付です。参加方法を確認してね！",
 
-  "ドリンク販売": "飲み物を販売しています。水分補給も忘れずに！",
+  "ドリンク販売":
+    "飲み物を販売しています。水分補給も忘れずに！",
 
-  "メインステージ": "イベントのメインステージです。ステージイベントを楽しんでね！",
+  "メインステージ":
+    "イベントのメインステージです。ステージイベントを楽しんでね！",
 
-  "公民館飲食・休憩エリア": "飲食や休憩に利用できるエリアです。ゆっくり休んでね！",
+  "公民館飲食・休憩エリア":
+    "飲食や休憩に利用できるエリアです。ゆっくり休んでね！",
 
-  "模擬店１": "模擬店のお店です。どんなお店があるか見てみよう！",
+  "模擬店１":
+    "模擬店のお店です。どんなお店があるか見てみよう！",
 
-  "模擬店２": "模擬店のお店です。お祭りのお買い物を楽しんでね！"
+  "模擬店２":
+    "模擬店のお店です。お祭りのお買い物を楽しんでね！"
 };
 
 const shopNames = [
@@ -276,7 +301,10 @@ const shopNames = [
   "模擬店２"
 ];
 
-/* 店舗ボタン作成 */
+/* =======================================
+   店舗ボタン作成
+======================================= */
+
 const shopGrid = document.getElementById("shopGrid");
 
 shopNames.forEach((name) => {
@@ -298,7 +326,10 @@ function showShopInfo(name) {
   alert(`${name}\n\n${description}`);
 }
 
-/* スタンプ読み込み */
+/* =======================================
+   スタンプ読み込み・保存
+======================================= */
+
 function loadStamps() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -333,10 +364,16 @@ function loadStamps() {
 }
 
 function saveStamps() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(stamps));
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(stamps)
+  );
 }
 
-/* Canvasサイズ調整 */
+/* =======================================
+   Canvasサイズ調整
+======================================= */
+
 function resizeCanvas() {
   const rect = canvas.getBoundingClientRect();
 
@@ -349,16 +386,25 @@ function resizeCanvas() {
   canvas.width = Math.round(rect.width * dpr);
   canvas.height = Math.round(rect.height * dpr);
 
+  /*
+    内部解像度は端末のDPRに合わせます。
+    以降の描画座標はCSSピクセル単位です。
+  */
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   drawAll();
 }
 
-/* マップの表示位置・倍率 */
+/* =======================================
+   マップの表示位置・倍率
+======================================= */
+
 function calculateMapLayout() {
-  if (!mapImg.complete ||
-      mapImg.naturalWidth === 0 ||
-      mapImg.naturalHeight === 0) {
+  if (
+    !mapImg.complete ||
+    mapImg.naturalWidth === 0 ||
+    mapImg.naturalHeight === 0
+  ) {
     mapLayout = null;
     return null;
   }
@@ -397,7 +443,10 @@ function calculateMapLayout() {
   return mapLayout;
 }
 
-/* マップとスタンプを描画 */
+/* =======================================
+   マップ・スタンプ描画
+======================================= */
+
 function drawAll() {
   const rect = canvas.getBoundingClientRect();
 
@@ -417,6 +466,7 @@ function drawAll() {
     drawHeight
   } = layout;
 
+  /* マップ画像 */
   ctx.drawImage(
     mapImg,
     offsetX,
@@ -425,13 +475,40 @@ function drawAll() {
     drawHeight
   );
 
+  /* スタンプ */
   stamps.forEach((stamp) => {
     const stampX = offsetX + stamp.x * scale;
     const stampY = offsetY + stamp.y * scale;
 
     const stampSize = Math.max(18, 42 * scale);
+    const circleRadius = stampSize * 0.62;
 
-    if (stampImg.complete && stampImg.naturalWidth > 0) {
+    /*
+      先に○を描きます。
+      その上にかぼちゃ画像を重ねます。
+    */
+
+    ctx.beginPath();
+    ctx.arc(
+      stampX,
+      stampY,
+      circleRadius,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+    ctx.fill();
+
+    ctx.lineWidth = Math.max(2, 3 * scale);
+    ctx.strokeStyle = "#e87519";
+    ctx.stroke();
+
+    /* かぼちゃ画像 */
+    if (
+      stampImg.complete &&
+      stampImg.naturalWidth > 0
+    ) {
       ctx.drawImage(
         stampImg,
         stampX - stampSize / 2,
@@ -440,10 +517,19 @@ function drawAll() {
         stampSize
       );
     } else {
+      /* 画像が読み込めない場合の代替表示 */
       ctx.beginPath();
-      ctx.arc(stampX, stampY, 12, 0, Math.PI * 2);
+      ctx.arc(
+        stampX,
+        stampY,
+        stampSize / 2,
+        0,
+        Math.PI * 2
+      );
+
       ctx.fillStyle = "#ff7a00";
       ctx.fill();
+
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 2;
       ctx.stroke();
@@ -451,11 +537,16 @@ function drawAll() {
   });
 }
 
-/* タップ位置を画像座標に変換 */
+/* =======================================
+   タップ位置を画像座標に変換
+======================================= */
+
 canvas.addEventListener("pointerdown", (event) => {
-  if (!mapImg.complete ||
-      mapImg.naturalWidth === 0 ||
-      mapImg.naturalHeight === 0) {
+  if (
+    !mapImg.complete ||
+    mapImg.naturalWidth === 0 ||
+    mapImg.naturalHeight === 0
+  ) {
     return;
   }
 
@@ -467,15 +558,18 @@ canvas.addEventListener("pointerdown", (event) => {
 
   const rect = canvas.getBoundingClientRect();
 
+  /* タップ位置：Canvas内のCSSピクセル */
   const canvasX = event.clientX - rect.left;
   const canvasY = event.clientY - rect.top;
 
+  /* Canvas座標からマップ画像座標へ変換 */
   const imageX =
     (canvasX - layout.offsetX) / layout.scale;
 
   const imageY =
     (canvasY - layout.offsetY) / layout.scale;
 
+  /* マップ画像の外側なら何もしない */
   if (
     imageX < 0 ||
     imageY < 0 ||
@@ -484,6 +578,11 @@ canvas.addEventListener("pointerdown", (event) => {
   ) {
     return;
   }
+
+  /*
+    既存スタンプの近くをタップすると削除。
+    それ以外は新しいスタンプを押します。
+  */
 
   const removeDistance = 35 / layout.scale;
 
@@ -507,7 +606,10 @@ canvas.addEventListener("pointerdown", (event) => {
   drawAll();
 });
 
-/* 全スタンプ消去 */
+/* =======================================
+   全スタンプ消去
+======================================= */
+
 function clearAll() {
   if (stamps.length === 0) {
     return;
@@ -526,14 +628,20 @@ document
   .getElementById("clearButton")
   .addEventListener("click", clearAll);
 
-/* 初期化 */
+/* =======================================
+   初期化
+======================================= */
+
 mapImg.addEventListener("load", () => {
   loadStamps();
   resizeCanvas();
 });
 
 mapImg.addEventListener("error", () => {
-  alert("map.png を読み込めませんでした。\nHTMLと同じフォルダーに置いてください。");
+  alert(
+    "map.png を読み込めませんでした。\n" +
+    "HTMLと同じフォルダーに置いてください。"
+  );
 });
 
 stampImg.addEventListener("load", () => {
