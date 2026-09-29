@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>冒険マップスタンプ</title>
-　
+
 <style>
   body {
     margin: 0;
@@ -66,8 +66,16 @@
     color: #333;
   }
 
+  #shopIntro {
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #444;
+    line-height: 1.6;
+  }
+
   #shopList {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   .shopButton {
@@ -103,18 +111,17 @@
 
 <body>
 
-<!-- ★ キラキラタイトル（ページの一番上） -->
+<!-- ★ キラキラタイトル -->
 <h2>
-  <span class="big-kira">秋祭り★リバ3自治会</span><br>
- 
-  <span class="big-kira">🎃　HALLOWEEN　🎃</span><br>
+  <span class="big-kira">秋祭り</span><br>
+  <span class="big-kira">リバ3自治会</span><br>
+  <span class="big-kira">HALLOWEEN</span><br>
   おまつりマップに<br>
   おばけスタンプをおしちゃおう！
 </h2>
 
 <div id="info">
-  行ったところにタップするとおばけが出てくるよ。もう一度タップすると消えるよ。<br>
-  下のお店の名前をタップすると説明が出るよ。
+  行ったところにタップするとおばけが出てくるよ。もう一度タップすると消えるよ。
 </div>
 
 <canvas id="mapCanvas"></canvas>
@@ -122,6 +129,13 @@
 <!-- ★ マップのすぐ下に移動したボタン -->
 <div id="controls">
   <button onclick="clearAll()">スタンプを全部消す</button>
+</div>
+
+<!-- ★ おみせのしょうかい（ボタンの上に追加） -->
+<div id="shopIntro">
+  ★おみせのしょうかい★<br>
+  ボタンをタップしてごらん<br>
+  おみせのしょうかいがでるよ
 </div>
 
 <!-- ★ 13店舗のボタン一覧 -->
@@ -218,7 +232,7 @@ function drawAll() {
   });
 }
 
-// タップ位置取得（ズレ補正＋トグル機能）
+// タップ位置取得
 canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -256,4 +270,5 @@ mapImg.onload = () => {
 
 </body>
 </html>
+
 
