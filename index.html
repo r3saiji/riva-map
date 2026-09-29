@@ -12,31 +12,65 @@
     font-family: sans-serif;
   }
 
-  /* ★ タイトル用の四角枠 */
+  /* ★ キラキラ文字（サイズアップ） */
+  .big-kira {
+    font-size: 55px;   /* ← さらに大きくした！ */
+    font-weight: bold;
+    color: #fff;
+    -webkit-text-stroke: 3px #ff6600;
+    text-shadow:
+      0 0 10px rgba(255,150,0,0.9),
+      0 0 20px rgba(255,120,0,0.7),
+      0 0 30px rgba(255,80,0,0.6),
+      4px 4px 8px rgba(0,0,0,0.4);
+    animation: kira 2.5s infinite ease-in-out;
+  }
+
+  @keyframes kira {
+    0% {
+      text-shadow:
+        0 0 8px rgba(255,150,0,0.6),
+        0 0 16px rgba(255,120,0,0.5),
+        0 0 24px rgba(255,80,0,0.4);
+    }
+    50% {
+      text-shadow:
+        0 0 18px rgba(255,200,0,1),
+        0 0 30px rgba(255,160,0,0.9),
+        0 0 40px rgba(255,120,0,0.8);
+    }
+    100% {
+      text-shadow:
+        0 0 8px rgba(255,150,0,0.6),
+        0 0 16px rgba(255,120,0,0.5),
+        0 0 24px rgba(255,80,0,0.4);
+    }
+  }
+
+  /* ★ 四角で囲うタイトル枠 */
   .titleBox {
     display: inline-block;
-    padding: 20px 30px;
+    padding: 25px 35px;
     margin-top: 20px;
     border: 5px solid #ff6600;
     border-radius: 20px;
     background: #ffffff;
-    font-size: 40px;
-    font-weight: bold;
     line-height: 1.4;
   }
 
-  /* ★ タイトル下のサブタイトル（四角なし） */
+  /* ★ 四角なしサブタイトル（マップとの間にスペース追加） */
   .titleSub {
-    font-size: 26px;
-    margin-top: 10px;
+    font-size: 30px;
+    margin-top: 15px;
+    margin-bottom: 35px;  /* ← マップとの間にスペース！ */
     line-height: 1.4;
   }
 
-  /* ★ 説明文用の四角枠 */
+  /* ★ 四角で囲う説明文 */
   .infoBox {
     display: inline-block;
     padding: 15px 25px;
-    margin-top: 15px;
+    margin-top: 10px;
     border: 4px solid #8888ff;
     border-radius: 15px;
     background: #ffffff;
@@ -97,13 +131,13 @@
 
 <body>
 
-<!-- ★ 四角で囲うタイトル -->
+<!-- ★ 四角で囲う＋キラキラタイトル -->
 <div class="titleBox">
-  あきまつり★リバ３<br>
-  🎃 HALLOWEEN 🎃
+  <span class="big-kira">あきまつり★リバ３</span><br>
+  <span class="big-kira">🎃 HALLOWEEN 🎃</span>
 </div>
 
-<!-- ★ 四角で囲わないサブタイトル -->
+<!-- ★ 四角なしサブタイトル -->
 <div class="titleSub">
   おまつりマップに<br>
   おばけスタンプを<br>
@@ -123,7 +157,7 @@
   <button onclick="clearAll()">スタンプを全部消す</button>
 </div>
 
-<!-- ★ おみせのしょうかい（ボタンの上） -->
+<!-- ★ おみせのしょうかい -->
 <div id="shopIntro">
   ★おみせのしょうかい★<br>
   ボタンをタップしてごらん<br>
@@ -161,7 +195,6 @@ obakeImg.src = "obake.png";
 
 let stamps = [];
 
-// ★ 13店舗の説明文
 const shopInfo = {
   "フランク": "ジューシーなソーセージが人気！",
   "焼きいか": "香ばしい匂いが漂う屋台。",
@@ -178,30 +211,25 @@ const shopInfo = {
   "模擬店2": "[ ひとふさのぶどう ] の、おみせだよ"
 };
 
-// ★ ポップアップ表示
 function showShopInfo(name) {
   alert(`${name}\n${shopInfo[name]}`);
 }
 
-// 保存データ読み込み
 function loadData() {
   const saved = localStorage.getItem("riva-map-stamps");
   if (saved) stamps = JSON.parse(saved);
 }
 
-// 保存データ書き込み
 function saveData() {
   localStorage.setItem("riva-map-stamps", JSON.stringify(stamps));
 }
 
-// すべて消す
 function clearAll() {
   stamps = [];
   saveData();
   drawAll();
 }
 
-// 描画処理
 function drawAll() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(mapImg, 0, 0, canvas.width, canvas.height);
@@ -224,7 +252,6 @@ function drawAll() {
   });
 }
 
-// タップ位置取得
 canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -249,7 +276,6 @@ canvas.addEventListener("pointerdown", (e) => {
   drawAll();
 });
 
-// 画像読み込み後にキャンバスサイズ設定
 mapImg.onload = () => {
   const displayWidth = canvas.getBoundingClientRect().width;
   const scale = displayWidth / mapImg.width;
