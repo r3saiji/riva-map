@@ -2,183 +2,184 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>冒険マップスタンプ</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>あきまつり リバ３ ハロウィン</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: sans-serif;
-  background: #f7f7f7;
-  text-align: center;
+  font-family: "Noto Sans JP", "Meiryo", sans-serif;
+  background: #fff8e8;
+  color: #38220e;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 4px;
+  align-items: stretch;
+  padding:
+    max(3px, env(safe-area-inset-top))
+    7px
+    max(3px, env(safe-area-inset-bottom));
   gap: 3px;
 }
 
 /* タイトル */
-.titleBox {
+header {
   flex: 0 0 auto;
-  width: 100%;
-  padding: 3px;
-  border: 2px solid #ff6600;
-  border-radius: 10px;
-  background: white;
+  text-align: center;
   line-height: 1.1;
 }
 
-.big-kira {
-  font-size: clamp(17px, 5vw, 28px);
-  font-weight: bold;
-  color: white;
-  -webkit-text-stroke: 1px #ff6600;
+h1 {
+  margin: 0;
+  font-size: clamp(17px, 4.5vw, 27px);
+  font-weight: 900;
+  color: #b73517;
   text-shadow:
-    0 0 5px rgba(255,150,0,0.9),
-    0 0 10px rgba(255,120,0,0.7),
-    2px 2px 3px rgba(0,0,0,0.3);
-  animation: kira 2.5s infinite ease-in-out;
+    1px 1px 0 #fff,
+    2px 2px 0 #ffd45a;
+  letter-spacing: 0.02em;
 }
 
-@keyframes kira {
-  0%, 100% {
-    text-shadow: 0 0 5px rgba(255,150,0,0.6);
-  }
-  50% {
-    text-shadow: 0 0 12px rgba(255,180,0,1);
-  }
+.subtitle {
+  margin-top: 3px;
+  font-size: clamp(11px, 2.8vw, 15px);
+  font-weight: 800;
+  color: #583719;
 }
 
-/* サブタイトル */
-.titleSub {
+/* 説明 */
+.information {
   flex: 0 0 auto;
-  font-size: clamp(12px, 3.2vw, 17px);
-  line-height: 1.2;
-}
-
-/* 説明文 */
-.infoBox {
-  flex: 0 0 auto;
-  width: 100%;
-  padding: 4px;
-  border: 2px solid #8888ff;
-  border-radius: 8px;
-  background: white;
-  font-size: clamp(10px, 2.7vw, 14px);
+  text-align: center;
+  padding: 4px 5px;
+  border: 2px solid #f0a32a;
+  border-radius: 9px;
+  background: #fff0b8;
   line-height: 1.25;
 }
 
+.information .main {
+  font-size: clamp(12px, 3vw, 16px);
+  font-weight: 900;
+  color: #a92e13;
+}
+
+.information .sub {
+  margin-top: 2px;
+  font-size: clamp(10px, 2.5vw, 13px);
+  font-weight: 700;
+}
+
 /* マップ */
-#mapCanvas {
-  display: block;
-  flex: 1 1 auto;
+.map-area {
+  flex: 1 1 0;
   min-height: 0;
   width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#mapCanvas {
+  display: block;
+  width: 100%;
   height: 100%;
-  object-fit: contain;
-  touch-action: none;
-  margin: 0;
-  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  touch-action: manipulation;
 }
 
-/* スタンプ消去ボタン */
-#controls {
+/* 全消去ボタン */
+.clear-area {
   flex: 0 0 auto;
-  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-#controls button {
-  width: 100%;
-  height: clamp(30px, 5vh, 42px);
-  padding: 2px;
-  font-size: clamp(14px, 3.5vw, 19px);
-  font-weight: bold;
+#clearButton {
+  width: min(100%, 340px);
+  min-height: 32px;
+  border: 2px solid #8b250f;
+  border-radius: 9px;
+  background: #c83a1d;
   color: white;
-  background: #ff6666;
-  border: 2px solid #e54444;
-  border-radius: 8px;
+  font-size: clamp(12px, 3vw, 15px);
+  font-weight: 900;
+  padding: 5px 8px;
+  box-shadow: 0 2px 0 #84230f;
 }
 
-/* お店紹介 */
-#shopIntro {
+/* 店舗ボタン */
+.shop-area {
   flex: 0 0 auto;
-  font-size: clamp(10px, 2.8vw, 14px);
-  font-weight: bold;
-  line-height: 1.15;
-  color: #444;
+  width: 100%;
 }
 
-/* お店ボタン */
-#shopList {
-  flex: 0 0 auto;
+.shop-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 3px;
-  width: 100%;
+  gap: 4px;
 }
 
-.shopButton {
+.shop-button {
   min-width: 0;
-  height: clamp(30px, 5.5vh, 45px);
-  padding: 2px;
-  background: #ffcc66;
-  border: 1px solid #e9a735;
-  border-radius: 6px;
-  font-size: clamp(9px, 2.5vw, 13px);
-  font-weight: bold;
-  line-height: 1.1;
+  min-height: 34px;
+  padding: 4px 2px;
+  border: 2px solid #d47b20;
+  border-radius: 8px;
+  background: #fff;
+  color: #54290d;
+  font-size: clamp(9px, 2.45vw, 13px);
+  line-height: 1.15;
+  font-weight: 800;
   overflow-wrap: anywhere;
-  cursor: pointer;
+  box-shadow: 0 2px 0 #e8b66a;
+  touch-action: manipulation;
 }
 
-.shopButton:active {
-  background: #ffdd88;
+.shop-button:active,
+#clearButton:active {
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
-/* 高さが小さいスマホ */
 @media (max-height: 700px) {
   body {
     gap: 2px;
-    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
-  .titleBox {
-    padding: 2px;
+  .information {
+    padding: 3px;
   }
 
-  .titleSub {
-    font-size: 11px;
+  .shop-grid {
+    gap: 3px;
   }
 
-  .infoBox {
-    padding: 2px;
-    font-size: 10px;
+  .shop-button {
+    min-height: 29px;
+    padding: 3px 1px;
   }
 
-  #shopIntro {
-    font-size: 10px;
-  }
-
-  .shopButton {
-    height: 29px;
-    font-size: 9px;
-  }
-
-  #controls button {
-    height: 29px;
-    font-size: 13px;
+  #clearButton {
+    min-height: 28px;
+    padding: 3px 6px;
   }
 }
 </style>
@@ -186,183 +187,448 @@ body {
 
 <body>
 
-<div class="titleBox">
-  <span class="big-kira">あきまつり★リバ３</span><br>
-  <span class="big-kira">🎃 HALLOWEEN 🎃</span>
+<header>
+  <h1>🎃 あきまつり リバ３ ハロウィン 🎃</h1>
+  <div class="subtitle">冒険マップ スタンプラリー</div>
+</header>
+
+<section class="information">
+  <div class="main">スマホでスタンプをおしてあそぼう！</div>
+  <div class="sub">おみせの せつめいも あるよ</div>
+</section>
+
+<div class="map-area">
+  <canvas id="mapCanvas"></canvas>
 </div>
 
-<div class="titleSub">
-  おまつりマップに おばけスタンプを おしちゃおう！
+<div class="clear-area">
+  <button id="clearButton" type="button">🧹 スタンプを全部消す</button>
 </div>
 
-<div class="infoBox">
-  いったところにタップするとおばけがでてくるよ。<br>
-  もういちどタップするときえるよ
-</div>
-
-<canvas id="mapCanvas"></canvas>
-
-<div id="controls">
-  <button onclick="clearAll()">スタンプを全部消す</button>
-</div>
-
-<div id="shopIntro">
-  ★おみせのしょうかい★ ボタンをタップしてごらん！
-</div>
-
-<div id="shopList">
-  <button class="shopButton" onclick="showShopInfo('フランク')">フランク</button>
-  <button class="shopButton" onclick="showShopInfo('焼きいか・焼きうどん')">焼きいか・焼きうどん</button>
-  <button class="shopButton" onclick="showShopInfo('キッチンカー')">キッチンカー</button>
-  <button class="shopButton" onclick="showShopInfo('こどもお楽しみエリア')">こどもお楽しみエリア</button>
-  <button class="shopButton" onclick="showShopInfo('こども受付')">こども受付</button>
-  <button class="shopButton" onclick="showShopInfo('ゲームコーナー')">ゲームコーナー</button>
-  <button class="shopButton" onclick="showShopInfo('お菓子渡し')">お菓子渡し</button>
-  <button class="shopButton" onclick="showShopInfo('たべもの券')">たべもの券</button>
-  <button class="shopButton" onclick="showShopInfo('大抽選会受付')">大抽選会受付</button>
-  <button class="shopButton" onclick="showShopInfo('ドリンク販売')">ドリンク販売</button>
-  <button class="shopButton" onclick="showShopInfo('メインステージ')">メインステージ</button>
-  <button class="shopButton" onclick="showShopInfo('公民館飲食・休憩エリア')">公民館飲食・休憩エリア</button>
-  <button class="shopButton" onclick="showShopInfo('模擬店1')">模擬店1</button>
-  <button class="shopButton" onclick="showShopInfo('模擬店2')">模擬店2</button>
-</div>
+<section class="shop-area">
+  <div class="shop-grid" id="shopGrid"></div>
+</section>
 
 <script>
-const canvas = document.getElementById("mapCanvas");
-const ctx = canvas.getContext("2d");
+"use strict";
+
+/* ---------------------------------------
+   画像
+--------------------------------------- */
 
 const mapImg = new Image();
 mapImg.src = "map.png";
 
-const obakeImg = new Image();
-obakeImg.src = "pumpkin.png";
+const stampImg = new Image();
+stampImg.src = "pumpkin.png";
+
+/* ---------------------------------------
+   Canvas
+--------------------------------------- */
+
+const canvas = document.getElementById("mapCanvas");
+const ctx = canvas.getContext("2d");
+
+const STORAGE_KEY = "riva-map-stamps";
+
+/*
+  スタンプ座標は、画面上の座標ではなく
+  map.png 本来の画像座標で保存します。
+
+  そのため、画面サイズが変わっても
+  マップ上の同じ場所に表示されます。
+*/
 
 let stamps = [];
+let mapLayout = null;
+
+/* ---------------------------------------
+   店舗情報
+--------------------------------------- */
 
 const shopInfo = {
-  "フランク": "ジューシーなソーセージが人気！\nおたのしみ券とひきかえだよ",
-  "焼きいか・焼きうどん": "香ばしい匂いが漂う屋台。\n200円で、はんばいしているよ",
-  "キッチンカー": "7台のキッチンカーが来てるよ！\nおしゃれなフードトラックでおいしいものたべよう！\n券をお店の人にわたせば、100円やすいよ！",
-  "こどもお楽しみエリア": "子どもたちの楽しいコーナーだよ！",
-  "こども受付": "こども抽選会の受付や\nおたのしみ券の受付してね！",
-  "ゲームコーナー": "子どもたちに大人気のゲームコーナだよ！！",
-  "お菓子渡し": "子どもたちにお菓子をプレゼント！\nおたのしみ券を見せてね！",
-  "たべもの券": "たべもの券とたべものをひきかえするところ",
-  "大抽選会受付": "抽選会の受付はこちら！\n抽選会の受付締め切りは12時までだよ！",
-  "ドリンク販売": "アルコールやジュースなどたべものを販売しているよ。\nビール　150円\nチューハイ　100円\nソフトドリンク　50円\n13：00～本数無制限\n★スピンオフ★\n（数に限りがあります。）\nミニたいやき　20円\n焼きプリンタルト　30円\nビーフカレー中辛　60円",
-  "メインステージ": "10：00～シニアバンドの演奏やおどり\n11：30～コスプレショー\n12：00～こども抽選会\n13：00～大抽選会\nが開催されるよ！",
-  "公民館飲食・休憩エリア": "ゆっくり休めるスペースだよ。\nたべたり、のんだりできるところだよ",
-  "模擬店1": "[ おひさま ] の、おみせだよ",
-  "模擬店2": "[ ひとふさのぶどう ] の、おみせだよ"
+  "フランク": "フランクフルトのお店です。お祭りの食べ歩きを楽しんでね！",
+
+  "焼きいか・焼きうどん": "焼きいか・焼きうどんのお店です。おいしいメニューを楽しんでね！",
+
+  "キッチンカー": "キッチンカーのお店です。どんなメニューがあるか見てみよう！",
+
+  "こどもお楽しみエリア": "こども向けのお楽しみエリアです。楽しい時間を過ごしてね！",
+
+  "こども受付": "こども向けイベントの受付です。参加する人はこちらへどうぞ！",
+
+  "ゲームコーナー": "ゲームに挑戦できるコーナーです。いろいろなゲームで遊んでね！",
+
+  "お菓子渡し": "お菓子を受け取る場所です。案内にしたがって並んでね！",
+
+  "たべもの券": "たべもの券の受付です。必要な券をこちらで確認してね！",
+
+  "大抽選会受付": "大抽選会の受付です。参加方法を確認してね！",
+
+  "ドリンク販売": "飲み物を販売しています。水分補給も忘れずに！",
+
+  "メインステージ": "イベントのメインステージです。ステージイベントを楽しんでね！",
+
+  "公民館飲食・休憩エリア": "飲食や休憩に利用できるエリアです。ゆっくり休んでね！",
+
+  "模擬店１": "模擬店のお店です。どんなお店があるか見てみよう！",
+
+  "模擬店２": "模擬店のお店です。お祭りのお買い物を楽しんでね！"
 };
 
+const shopNames = [
+  "フランク",
+  "焼きいか・焼きうどん",
+  "キッチンカー",
+  "こどもお楽しみエリア",
+  "こども受付",
+  "ゲームコーナー",
+  "お菓子渡し",
+  "たべもの券",
+  "大抽選会受付",
+  "ドリンク販売",
+  "メインステージ",
+  "公民館飲食・休憩エリア",
+  "模擬店１",
+  "模擬店２"
+];
+
+/* ---------------------------------------
+   店舗ボタン作成
+--------------------------------------- */
+
+const shopGrid = document.getElementById("shopGrid");
+
+shopNames.forEach((name) => {
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.className = "shop-button";
+  button.textContent = name;
+
+  button.addEventListener("click", () => {
+    showShopInfo(name);
+  });
+
+  shopGrid.appendChild(button);
+});
+
 function showShopInfo(name) {
-  alert(`${name}\n${shopInfo[name]}`);
+  const description = shopInfo[name] || "お店の説明はありません。";
+  alert(`${name}\n\n${description}`);
 }
 
-function loadData() {
-  const saved = localStorage.getItem("riva-map-stamps");
-  if (saved) {
-    try {
-      stamps = JSON.parse(saved);
-    } catch {
+/* ---------------------------------------
+   保存データ読み込み
+--------------------------------------- */
+
+function loadStamps() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (!saved) {
       stamps = [];
+      return;
     }
+
+    const parsed = JSON.parse(saved);
+
+    if (!Array.isArray(parsed)) {
+      stamps = [];
+      return;
+    }
+
+    /*
+      古い形式のデータを読み込まないよう、
+      画像座標として有効なデータだけ残します。
+    */
+
+    const imageWidth = mapImg.naturalWidth;
+    const imageHeight = mapImg.naturalHeight;
+
+    stamps = parsed.filter((stamp) => {
+      return Number.isFinite(stamp.x) &&
+             Number.isFinite(stamp.y) &&
+             stamp.x >= 0 &&
+             stamp.y >= 0 &&
+             (!imageWidth || stamp.x <= imageWidth) &&
+             (!imageHeight || stamp.y <= imageHeight);
+    });
+
+  } catch (error) {
+    stamps = [];
   }
 }
 
-function saveData() {
-  localStorage.setItem("riva-map-stamps", JSON.stringify(stamps));
+function saveStamps() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(stamps));
 }
 
-function clearAll() {
-  stamps = [];
-  saveData();
+/* ---------------------------------------
+   Canvasサイズ調整
+--------------------------------------- */
+
+function resizeCanvas() {
+  const rect = canvas.getBoundingClientRect();
+
+  if (rect.width <= 0 || rect.height <= 0) {
+    return;
+  }
+
+  const dpr = window.devicePixelRatio || 1;
+
+  /*
+    CSS上の表示サイズと内部描画サイズを分けます。
+    描画処理はCSSピクセル単位で行います。
+  */
+
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
   drawAll();
 }
 
-/* Canvasの内部サイズと表示サイズを一致させる */
-function resizeCanvas() {
-  if (!mapImg.complete || !mapImg.naturalWidth) return;
+/* ---------------------------------------
+   マップの表示位置・倍率を計算
+--------------------------------------- */
+
+function calculateMapLayout() {
+  if (!mapImg.complete ||
+      mapImg.naturalWidth === 0 ||
+      mapImg.naturalHeight === 0) {
+    mapLayout = null;
+    return null;
+  }
 
   const rect = canvas.getBoundingClientRect();
 
+  const viewWidth = rect.width;
+  const viewHeight = rect.height;
+
+  const imageWidth = mapImg.naturalWidth;
+  const imageHeight = mapImg.naturalHeight;
+
+  /*
+    マップ全体がCanvas内に収まる倍率を計算。
+    縦横比を維持して中央に配置します。
+  */
+
   const scale = Math.min(
-    rect.width / mapImg.naturalWidth,
-    rect.height / mapImg.naturalHeight
+    viewWidth / imageWidth,
+    viewHeight / imageHeight
   );
 
-  canvas.width = Math.round(mapImg.naturalWidth * scale);
-  canvas.height = Math.round(mapImg.naturalHeight * scale);
+  const drawWidth = imageWidth * scale;
+  const drawHeight = imageHeight * scale;
 
-  drawAll();
+  const offsetX = (viewWidth - drawWidth) / 2;
+  const offsetY = (viewHeight - drawHeight) / 2;
+
+  mapLayout = {
+    viewWidth,
+    viewHeight,
+    imageWidth,
+    imageHeight,
+    scale,
+    offsetX,
+    offsetY,
+    drawWidth,
+    drawHeight
+  };
+
+  return mapLayout;
 }
 
+/* ---------------------------------------
+   マップとスタンプを描画
+--------------------------------------- */
+
 function drawAll() {
-  if (!mapImg.complete || !mapImg.naturalWidth) return;
+  const rect = canvas.getBoundingClientRect();
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(mapImg, 0, 0, canvas.width, canvas.height);
+  /*
+    ctxはDPR変換済みなので、
+    clearRectにはCSSピクセルのサイズを指定します。
+  */
 
-  const stampSize = canvas.width * 0.08;
+  ctx.clearRect(0, 0, rect.width, rect.height);
 
-  stamps.forEach(s => {
-    if (obakeImg.complete && obakeImg.naturalWidth) {
-      ctx.shadowColor = "rgba(0,0,0,0.4)";
-      ctx.shadowBlur = 8;
+  const layout = calculateMapLayout();
 
+  if (!layout) {
+    return;
+  }
+
+  const {
+    scale,
+    offsetX,
+    offsetY,
+    drawWidth,
+    drawHeight
+  } = layout;
+
+  /* マップ */
+  ctx.drawImage(
+    mapImg,
+    offsetX,
+    offsetY,
+    drawWidth,
+    drawHeight
+  );
+
+  /* スタンプ */
+  stamps.forEach((stamp) => {
+    const stampX = offsetX + stamp.x * scale;
+    const stampY = offsetY + stamp.y * scale;
+
+    const stampSize = Math.max(18, 42 * scale);
+
+    if (stampImg.complete && stampImg.naturalWidth > 0) {
       ctx.drawImage(
-        obakeImg,
-        s.x - stampSize / 2,
-        s.y - stampSize / 2,
+        stampImg,
+        stampX - stampSize / 2,
+        stampY - stampSize / 2,
         stampSize,
         stampSize
       );
-
-      ctx.shadowBlur = 0;
+    } else {
+      ctx.beginPath();
+      ctx.arc(stampX, stampY, 12, 0, Math.PI * 2);
+      ctx.fillStyle = "#ff7a00";
+      ctx.fill();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
     }
-
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, stampSize / 2, 0, Math.PI * 2);
-    ctx.stroke();
   });
 }
 
-/* タップ位置をCanvas座標に正確に変換 */
-canvas.addEventListener("pointerdown", (e) => {
-  const rect = canvas.getBoundingClientRect();
+/* ---------------------------------------
+   タップ位置を画像座標に変換
+--------------------------------------- */
 
-  const x = (e.clientX - rect.left) * canvas.width / rect.width;
-  const y = (e.clientY - rect.top) * canvas.height / rect.height;
-
-  const threshold = canvas.width * 0.06;
-
-  const index = stamps.findIndex(s => {
-    const dx = s.x - x;
-    const dy = s.y - y;
-    return Math.sqrt(dx * dx + dy * dy) < threshold;
-  });
-
-  if (index >= 0) {
-    stamps.splice(index, 1);
-  } else {
-    stamps.push({ x, y });
+canvas.addEventListener("pointerdown", (event) => {
+  if (!mapImg.complete ||
+      mapImg.naturalWidth === 0 ||
+      mapImg.naturalHeight === 0) {
+    return;
   }
 
-  saveData();
+  /*
+    描画時と同じレイアウト計算を使います。
+    これが上下の位置ずれを防ぐ重要な部分です。
+  */
+
+  const layout = calculateMapLayout();
+
+  if (!layout) {
+    return;
+  }
+
+  const rect = canvas.getBoundingClientRect();
+
+  /* タップ位置をCanvas内のCSSピクセルに変換 */
+  const canvasX = event.clientX - rect.left;
+  const canvasY = event.clientY - rect.top;
+
+  /*
+    Canvas上の位置から、マップ画像上の位置へ変換。
+    マップ画像の余白部分をタップした場合は無視します。
+  */
+
+  const imageX =
+    (canvasX - layout.offsetX) / layout.scale;
+
+  const imageY =
+    (canvasY - layout.offsetY) / layout.scale;
+
+  if (
+    imageX < 0 ||
+    imageY < 0 ||
+    imageX > layout.imageWidth ||
+    imageY > layout.imageHeight
+  ) {
+    return;
+  }
+
+  /*
+    近くに既存スタンプがあれば削除。
+    なければ新しいスタンプを追加。
+  */
+
+  const removeDistance = 35 / layout.scale;
+
+  const existingIndex = stamps.findIndex((stamp) => {
+    const dx = stamp.x - imageX;
+    const dy = stamp.y - imageY;
+
+    return Math.sqrt(dx * dx + dy * dy) < removeDistance;
+  });
+
+  if (existingIndex >= 0) {
+    stamps.splice(existingIndex, 1);
+  } else {
+    stamps.push({
+      x: imageX,
+      y: imageY
+    });
+  }
+
+  saveStamps();
   drawAll();
 });
 
-mapImg.onload = () => {
-  loadData();
-  resizeCanvas();
-};
+/* ---------------------------------------
+   全スタンプ消去
+--------------------------------------- */
 
-obakeImg.onload = drawAll;
+function clearAll() {
+  if (stamps.length === 0) {
+    return;
+  }
+
+  if (!confirm("スタンプを全部消しますか？")) {
+    return;
+  }
+
+  stamps = [];
+  saveStamps();
+  drawAll();
+}
+
+document
+  .getElementById("clearButton")
+  .addEventListener("click", clearAll);
+
+/* ---------------------------------------
+   初期化
+--------------------------------------- */
+
+mapImg.addEventListener("load", () => {
+  loadStamps();
+  resizeCanvas();
+});
+
+mapImg.addEventListener("error", () => {
+  alert("map.png を読み込めませんでした。\nHTMLと同じフォルダーに置いてください。");
+});
+
+stampImg.addEventListener("load", () => {
+  drawAll();
+});
+
+stampImg.addEventListener("error", () => {
+  console.warn("pumpkin.png を読み込めませんでした。");
+});
 
 window.addEventListener("resize", resizeCanvas);
+
+if (mapImg.complete && mapImg.naturalWidth > 0) {
+  loadStamps();
+  resizeCanvas();
+}
 </script>
 
 </body>
