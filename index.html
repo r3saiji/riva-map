@@ -14,7 +14,7 @@
 
   /* ★ キラキラ文字（サイズアップ） */
   .big-kira {
-    font-size: 55px;   /* ← さらに大きくした！ */
+    font-size: 55px;
     font-weight: bold;
     color: #fff;
     -webkit-text-stroke: 3px #ff6600;
@@ -62,7 +62,7 @@
   .titleSub {
     font-size: 30px;
     margin-top: 15px;
-    margin-bottom: 35px;  /* ← マップとの間にスペース！ */
+    margin-bottom: 35px;
     line-height: 1.4;
   }
 
@@ -190,8 +190,10 @@ const canvas = document.getElementById("mapCanvas");
 const ctx = canvas.getContext("2d");
 const mapImg = new Image();
 mapImg.src = "map.png";
+
+/* ★ ここを pumpkin.png に変更した！ */
 const obakeImg = new Image();
-obakeImg.src = "obake.png";
+obakeImg.src = "pumpkin.png";
 
 let stamps = [];
 
