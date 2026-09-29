@@ -123,7 +123,7 @@ h1 {
   box-shadow: 0 2px 0 #84230f;
 }
 
-/* 店舗ボタン */
+/* 店舗ボタン：3列 */
 .shop-area {
   flex: 0 0 auto;
   width: 100%;
@@ -131,19 +131,19 @@ h1 {
 
 .shop-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 4px;
 }
 
 .shop-button {
   min-width: 0;
   min-height: 34px;
-  padding: 4px 2px;
+  padding: 4px 3px;
   border: 2px solid #d47b20;
   border-radius: 8px;
   background: #fff;
   color: #54290d;
-  font-size: clamp(9px, 2.45vw, 13px);
+  font-size: clamp(10px, 2.8vw, 14px);
   line-height: 1.15;
   font-weight: 800;
   overflow-wrap: anywhere;
@@ -174,7 +174,7 @@ h1 {
 
   .shop-button {
     min-height: 29px;
-    padding: 3px 1px;
+    padding: 3px 2px;
   }
 
   #clearButton {
@@ -212,40 +212,23 @@ h1 {
 <script>
 "use strict";
 
-/* ---------------------------------------
-   画像
---------------------------------------- */
-
+/* 画像 */
 const mapImg = new Image();
 mapImg.src = "map.png";
 
 const stampImg = new Image();
 stampImg.src = "pumpkin.png";
 
-/* ---------------------------------------
-   Canvas
---------------------------------------- */
-
+/* Canvas */
 const canvas = document.getElementById("mapCanvas");
 const ctx = canvas.getContext("2d");
 
 const STORAGE_KEY = "riva-map-stamps";
 
-/*
-  スタンプ座標は、画面上の座標ではなく
-  map.png 本来の画像座標で保存します。
-
-  そのため、画面サイズが変わっても
-  マップ上の同じ場所に表示されます。
-*/
-
 let stamps = [];
 let mapLayout = null;
 
-/* ---------------------------------------
-   店舗情報
---------------------------------------- */
-
+/* 店舗情報 */
 const shopInfo = {
   "フランク": "フランクフルトのお店です。お祭りの食べ歩きを楽しんでね！",
 
@@ -293,10 +276,7 @@ const shopNames = [
   "模擬店２"
 ];
 
-/* ---------------------------------------
-   店舗ボタン作成
---------------------------------------- */
-
+/* 店舗ボタン作成 */
 const shopGrid = document.getElementById("shopGrid");
 
 shopNames.forEach((name) => {
@@ -318,10 +298,7 @@ function showShopInfo(name) {
   alert(`${name}\n\n${description}`);
 }
 
-/* ---------------------------------------
-   保存データ読み込み
---------------------------------------- */
-
+/* スタンプ読み込み */
 function loadStamps() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -338,11 +315,6 @@ function loadStamps() {
       return;
     }
 
-    /*
-      古い形式のデータを読み込まないよう、
-      画像座標として有効なデータだけ残します。
-    */
-
     const imageWidth = mapImg.naturalWidth;
     const imageHeight = mapImg.naturalHeight;
 
@@ -351,8 +323,8 @@ function loadStamps() {
              Number.isFinite(stamp.y) &&
              stamp.x >= 0 &&
              stamp.y >= 0 &&
-             (!imageWidth || stamp.x <= imageWidth) &&
-             (!imageHeight || stamp.y <= imageHeight);
+             stamp.x <= imageWidth &&
+             stamp.y <= imageHeight;
     });
 
   } catch (error) {
@@ -364,10 +336,7 @@ function saveStamps() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(stamps));
 }
 
-/* ---------------------------------------
-   Canvasサイズ調整
---------------------------------------- */
-
+/* Canvasサイズ調整 */
 function resizeCanvas() {
   const rect = canvas.getBoundingClientRect();
 
@@ -377,11 +346,6 @@ function resizeCanvas() {
 
   const dpr = window.devicePixelRatio || 1;
 
-  /*
-    CSS上の表示サイズと内部描画サイズを分けます。
-    描画処理はCSSピクセル単位で行います。
-  */
-
   canvas.width = Math.round(rect.width * dpr);
   canvas.height = Math.round(rect.height * dpr);
 
@@ -390,10 +354,7 @@ function resizeCanvas() {
   drawAll();
 }
 
-/* ---------------------------------------
-   マップの表示位置・倍率を計算
---------------------------------------- */
-
+/* マップの表示位置・倍率 */
 function calculateMapLayout() {
   if (!mapImg.complete ||
       mapImg.naturalWidth === 0 ||
@@ -409,11 +370,6 @@ function calculateMapLayout() {
 
   const imageWidth = mapImg.naturalWidth;
   const imageHeight = mapImg.naturalHeight;
-
-  /*
-    マップ全体がCanvas内に収まる倍率を計算。
-    縦横比を維持して中央に配置します。
-  */
 
   const scale = Math.min(
     viewWidth / imageWidth,
@@ -441,17 +397,9 @@ function calculateMapLayout() {
   return mapLayout;
 }
 
-/* ---------------------------------------
-   マップとスタンプを描画
---------------------------------------- */
-
+/* マップとスタンプを描画 */
 function drawAll() {
   const rect = canvas.getBoundingClientRect();
-
-  /*
-    ctxはDPR変換済みなので、
-    clearRectにはCSSピクセルのサイズを指定します。
-  */
 
   ctx.clearRect(0, 0, rect.width, rect.height);
 
@@ -469,7 +417,6 @@ function drawAll() {
     drawHeight
   } = layout;
 
-  /* マップ */
   ctx.drawImage(
     mapImg,
     offsetX,
@@ -478,7 +425,6 @@ function drawAll() {
     drawHeight
   );
 
-  /* スタンプ */
   stamps.forEach((stamp) => {
     const stampX = offsetX + stamp.x * scale;
     const stampY = offsetY + stamp.y * scale;
@@ -505,21 +451,13 @@ function drawAll() {
   });
 }
 
-/* ---------------------------------------
-   タップ位置を画像座標に変換
---------------------------------------- */
-
+/* タップ位置を画像座標に変換 */
 canvas.addEventListener("pointerdown", (event) => {
   if (!mapImg.complete ||
       mapImg.naturalWidth === 0 ||
       mapImg.naturalHeight === 0) {
     return;
   }
-
-  /*
-    描画時と同じレイアウト計算を使います。
-    これが上下の位置ずれを防ぐ重要な部分です。
-  */
 
   const layout = calculateMapLayout();
 
@@ -529,14 +467,8 @@ canvas.addEventListener("pointerdown", (event) => {
 
   const rect = canvas.getBoundingClientRect();
 
-  /* タップ位置をCanvas内のCSSピクセルに変換 */
   const canvasX = event.clientX - rect.left;
   const canvasY = event.clientY - rect.top;
-
-  /*
-    Canvas上の位置から、マップ画像上の位置へ変換。
-    マップ画像の余白部分をタップした場合は無視します。
-  */
 
   const imageX =
     (canvasX - layout.offsetX) / layout.scale;
@@ -552,11 +484,6 @@ canvas.addEventListener("pointerdown", (event) => {
   ) {
     return;
   }
-
-  /*
-    近くに既存スタンプがあれば削除。
-    なければ新しいスタンプを追加。
-  */
 
   const removeDistance = 35 / layout.scale;
 
@@ -580,10 +507,7 @@ canvas.addEventListener("pointerdown", (event) => {
   drawAll();
 });
 
-/* ---------------------------------------
-   全スタンプ消去
---------------------------------------- */
-
+/* 全スタンプ消去 */
 function clearAll() {
   if (stamps.length === 0) {
     return;
@@ -602,10 +526,7 @@ document
   .getElementById("clearButton")
   .addEventListener("click", clearAll);
 
-/* ---------------------------------------
-   初期化
---------------------------------------- */
-
+/* 初期化 */
 mapImg.addEventListener("load", () => {
   loadStamps();
   resizeCanvas();
